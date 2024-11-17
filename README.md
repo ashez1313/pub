@@ -5,7 +5,9 @@
 Модуль предоставляет функционал блокировки изменения ответственного по группе пользователя.
 
 Блокировка происходит как в интерфейсе пользователя
-![img.png](src/img1.png)
+![image](https://github.com/user-attachments/assets/df0cd27c-1524-42e8-98de-d1fdf47e0092)
+
 
 Так и на стороне сервера. Тогда пользователю придет подобное уведомление:
-![img_1.png](src/img2.png)
+![image](https://github.com/user-attachments/assets/df87871b-b9d3-4dfb-b582-9238f9caa13f)
+
