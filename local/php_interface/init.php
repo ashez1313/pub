@@ -1,2 +1,2 @@
 <?php
-phpinfo();
+\Bitrix\Main\Loader::includeModule('mymodule.custom');
