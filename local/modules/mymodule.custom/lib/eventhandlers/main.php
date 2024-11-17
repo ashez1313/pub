@@ -25,10 +25,14 @@ class main
             return;
         }
 
+        // если пользователь находится на странице карточки сделки
         if (preg_match('@/crm/deal/details/[0-9]+/@i', $request->getRequestedPage())) {
+            // массив групп текущего пользователя
             $userGroups = UserTable::getUserGroupIds(CurrentUser::get()->GetID());
 
+            // если пользователь не входит в разрешенную группу
             if (!in_array(ASSIGNED_CHANGE_GROUP_ID, $userGroups)) {
+                // то загружаем расширение блокировки ответственного
                 \Bitrix\Main\UI\Extension::load('mymodule.custom.denyAssignedChange');
             }
         }
