@@ -30,7 +30,7 @@ class crm
             $userGroups = UserTable::getUserGroupIds(intval($arFields["MODIFY_BY_ID"]));
 
             // если пользователь не входит в разрешенную группу
-            if (in_array(ASSIGNED_CHANGE_GROUP_ID, $userGroups)) {
+            if (!in_array(ASSIGNED_CHANGE_GROUP_ID, $userGroups)) {
                 // текущая сделка
                 $currentDeal = DealTable::getByPrimary($arFields["ID"])->fetchObject();
 

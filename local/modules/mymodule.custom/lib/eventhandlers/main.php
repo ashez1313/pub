@@ -28,7 +28,7 @@ class main
         if (preg_match('@/crm/deal/details/[0-9]+/@i', $request->getRequestedPage())) {
             $userGroups = UserTable::getUserGroupIds(CurrentUser::get()->GetID());
 
-            if (in_array(ASSIGNED_CHANGE_GROUP_ID, $userGroups)) {
+            if (!in_array(ASSIGNED_CHANGE_GROUP_ID, $userGroups)) {
                 \Bitrix\Main\UI\Extension::load('mymodule.custom.denyAssignedChange');
             }
         }
