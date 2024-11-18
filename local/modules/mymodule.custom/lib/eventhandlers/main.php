@@ -2,13 +2,14 @@
 
 namespace MyModule\Custom\EventHandlers;
 
+use Bitrix\Main\Config\Option;
 use \Bitrix\Main\UserTable;
 use \Bitrix\Main\Engine\CurrentUser;
 
 /**
  * Класс обработчиков события модуля Main
  */
-class main
+class Main
 {
     /**
      * Загрузка расширения блокировки ответственного в интерфейсе карточки сделки
@@ -27,15 +28,17 @@ class main
 
         // если пользователь находится на странице карточки сделки
         if (preg_match('@/crm/deal/details/[0-9]+/@i', $request->getRequestedPage())) {
-            // массив групп текущего пользователя
-            $userGroups = UserTable::getUserGroupIds(CurrentUser::get()->GetID());
+            /// список групп пользователя, кто вносит изменения
+            $userGroups = UserTable::getUserGroupIds(CurrentUser::get()->getId());
 
-            // если пользователь не входит в разрешенную группу
-            if (!in_array(ASSIGNED_CHANGE_GROUP_ID, $userGroups)) {
+            // массив разрешенных групп из настроек модуля
+            $allowedGroups = explode(',', Option::get('mymodule.custom', "mymodule_groups_assigned_change"));
+
+            // если пользователь не входит в разрешенные группы
+            if (!array_intersect($allowedGroups, $userGroups)) {
                 // то загружаем расширение блокировки ответственного
                 \Bitrix\Main\UI\Extension::load('mymodule.custom.denyAssignedChange');
             }
         }
     }
-
 }

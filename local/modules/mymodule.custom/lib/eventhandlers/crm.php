@@ -4,11 +4,12 @@ namespace MyModule\Custom\EventHandlers;
 
 use Bitrix\Main\UserTable;
 use Bitrix\Crm\DealTable;
+use Bitrix\Main\Config\Option;
 
 /**
  * Класс для обработчиков событий модуля CRM
  */
-class crm
+class Crm
 {
     /**
      * Обработчик запрета изменения ответственного в сделке
@@ -29,8 +30,11 @@ class crm
             // список групп пользователя, кто вносит изменения
             $userGroups = UserTable::getUserGroupIds(intval($arFields["MODIFY_BY_ID"]));
 
-            // если пользователь не входит в разрешенную группу
-            if (!in_array(ASSIGNED_CHANGE_GROUP_ID, $userGroups)) {
+            // массив разрешенных групп из настроек модуля
+            $allowedGroups = explode(',', Option::get('mymodule.custom', "mymodule_groups_assigned_change"));
+
+            // если пользователь не входит в разрешенные группы
+            if (!array_intersect($allowedGroups, $userGroups)) {
                 // текущая сделка
                 $currentDeal = DealTable::getByPrimary($arFields["ID"])->fetchObject();
 
