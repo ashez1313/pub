@@ -20,7 +20,7 @@ class Crm
      * @throws \Bitrix\Main\ObjectPropertyException
      * @throws \Bitrix\Main\SystemException
      */
-    public static function onBeforeCrmDealUpdateHandler(array &$arFields) : void
+    public static function onBeforeCrmDealUpdateHandler(array &$arFields): void
     {
         // проверка заполненности полей "Ответственный" и "Кем изменен"
         if (
