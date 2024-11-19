@@ -11,7 +11,7 @@ Loc::loadMessages(__FILE__);
 $request = HttpApplication::getInstance()->getContext()->getRequest();
 // id модуля
 $module_id = htmlspecialcharsbx($request["mid"] != "" ? $request["mid"] : $request["id"]);
-// получим права доступа текущего пользователя на модуль
+// права текущего пользователя на модуль
 $POST_RIGHT = $APPLICATION->GetGroupRight($module_id);
 // если нет прав - ошибка "Доступ запрещен"
 if ($POST_RIGHT < "S") {
@@ -21,12 +21,13 @@ if ($POST_RIGHT < "S") {
 // подключение модуля
 Loader::includeModule($module_id);
 
-// список всех активных групп
-$resGroups = \Bitrix\Main\GroupTable::getList(array(
+// получаем список всех активных групп
+$resGroups = \Bitrix\Main\GroupTable::getList([
     'order' => ['ID'], // сортируем по ID группы
     'select' => ['ID', 'NAME'],
     'filter' => ['ACTIVE' => 'Y',] // все активные группы
-))->fetchCollection();
+])->fetchCollection();
+// массив с группами
 $arGroups = [];
 foreach ($resGroups as $resGroup) {
     $arGroups[$resGroup['ID']] = $resGroup['NAME'];
@@ -65,6 +66,7 @@ $aTabs = [
         "TITLE" => Loc::getMessage("MAIN_TAB_TITLE_RIGHTS")
     ]
 ];
+
 // проверяем текущий POST запрос и сохраняем выбранные пользователем настройки
 if ($request->isPost() && check_bitrix_sessid()) {
     // цикл по вкладкам
@@ -75,17 +77,18 @@ if ($request->isPost() && check_bitrix_sessid()) {
             if (!is_array($arOption)) {
                 continue;
             }
-            // проверяем POST запрос, если инициатором выступила кнопка с name="Submit" сохраняем введенные настройки в базу данных
+            // проверяем POST запрос, если инициатором выступила кнопка с name="Submit", то сохраняем настройки в базу данных
             if ($request["Submit"]) {
                 // получаем в переменную $optionValue введенные пользователем данные
                 $optionValue = $request->getPost($arOption[0]);
-                // устанавливаем выбранные значения параметров и сохраняем в базу данных, хранить можем только текст, значит если приходит массив, то разбиваем его через запятую, если не массив сохраняем как есть
+                // устанавливаем выбранные значения параметров и сохраняем в базу данных
+                // хранить можем только текст, поэтому в случае массива сохраняем значения в строку через запятую
                 Option::set($module_id, $arOption[0],
                     is_array($optionValue) ? implode(",", $optionValue) : $optionValue);
             }
             // проверяем POST запрос, если инициатором выступила кнопка с name="default" сохраняем дефолтные настройки в базу данных
             if ($request["default"]) {
-                // устанавливаем дефолтные значения параметров и сохраняем в базу данных
+                // устанавливаем значения параметров по умолчанию и сохраняем в базу данных
                 Option::set($module_id, $arOption[0], $arOption[2]);
             }
         }
