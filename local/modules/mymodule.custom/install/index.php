@@ -103,6 +103,22 @@ class mymodule_custom extends CModule
             true  // рекурсивно
         );
 
+        // копируем компоненты модуля
+        CopyDirFiles(
+            __DIR__ . "/components",
+            Application::getDocumentRoot() . "/local/components",
+            true, // с перезаписью
+            true  // рекурсивно
+        );
+
+        // копируем публичные страницы модуля
+        CopyDirFiles(
+            __DIR__ . "/files",
+            Application::getDocumentRoot() . "/local",
+            true, // с перезаписью
+            true  // рекурсивно
+        );
+
         return true;
     }
 
@@ -117,6 +133,20 @@ class mymodule_custom extends CModule
         if (is_dir(Application::getDocumentRoot() . "/local/js/" . $moduleDirName)) {
             DeleteDirFilesEx(
                 "/local/js/" . $moduleDirName
+            );
+        }
+
+        // удаляем компоненты модуля
+        if (is_dir(Application::getDocumentRoot() . "/local/components/" . $this->MODULE_ID)) {
+            DeleteDirFilesEx(
+                "/local/components/" . $this->MODULE_ID
+            );
+        }
+
+        // удаляем публичные страницы модуля
+        if (is_dir(Application::getDocumentRoot() . "/local/public/hlcats")) {
+            DeleteDirFilesEx(
+                "/local/public/hlcats"
             );
         }
 
