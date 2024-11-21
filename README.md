@@ -32,6 +32,9 @@
   ![image](https://github.com/user-attachments/assets/8de74c4f-933f-4464-9f91-726159dcde97)
 
   Содержимое таба выводит свой компонент вывода данных из hl-блока
+
+  ![image](https://github.com/user-attachments/assets/fefbb799-84fb-4296-afbc-d2ec4e1329c4)
+
   
 </details>
 
