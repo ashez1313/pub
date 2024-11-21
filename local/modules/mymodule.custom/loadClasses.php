@@ -13,5 +13,7 @@ Bitrix\Main\Loader::registerAutoloadClasses(
         'MyModule\\Custom\\EventHandlers\\Main' => 'lib/eventhandlers/main.php',
         // класс для обработчиков событий модуля crm
         'MyModule\\Custom\\EventHandlers\\Crm' => 'lib/eventhandlers/crm.php',
+        // класс для добавления пользовательской вкладки в карточку лида
+        'MyModule\\Custom\\Crm\\LeadCustomTab' => 'lib/crm/leadcustomtab.php',
     ]
 );

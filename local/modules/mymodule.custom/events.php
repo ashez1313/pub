@@ -27,3 +27,10 @@ $eventManager->addEventHandlerCompatible(
         "onBeforeCrmDealUpdateHandler"
     ]
 );
+
+// дополнительная вкладка с котами в карточке лида
+$eventManager->addEventHandler('crm', 'onEntityDetailsTabsInitialized', [
+        '\\MyModule\\Custom\\EventHandlers\\Crm',
+        'addCustomLeadTab'
+    ]
+);

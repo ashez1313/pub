@@ -5,6 +5,9 @@ namespace MyModule\Custom\EventHandlers;
 use Bitrix\Main\UserTable;
 use Bitrix\Crm\DealTable;
 use Bitrix\Main\Config\Option;
+use Bitrix\Main\EventResult;
+use Bitrix\Main\Event;
+use MyModule\Custom\Crm\LeadCustomTab;
 
 /**
  * Класс для обработчиков событий модуля CRM
@@ -60,5 +63,25 @@ class Crm
                 }
             }
         }
+    }
+
+    /**
+     * Обработчик добавления вкладки с котами в карточку лида
+     * @param Event $event
+     * @return EventResult
+     */
+    public static function addCustomLeadTab(Event $event): EventResult
+    {
+        $entityId = $event->getParameter('entityID');
+        $entityTypeID = $event->getParameter('entityTypeID');
+        $tabs = $event->getParameter('tabs');
+
+        $leadTabs = new LeadCustomTab();
+
+        $tabs = $leadTabs->getModifiedTabs($entityId, $entityTypeID, $tabs);
+
+        return new EventResult(EventResult::SUCCESS, [
+            'tabs' => $tabs,
+        ]);
     }
 }
